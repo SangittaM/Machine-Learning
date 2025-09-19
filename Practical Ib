@@ -1,0 +1,144 @@
+Q1b. Load a dataset, calculate descriptive summary statistics, create visualizations using different graphs, and identify potential features and target variables Note: Explore Univariate and Bivariate graphs (Matplotlib) and Seaborn for visualization. Aim:- Load a dataset, calculate descriptive summary statistics, create visualizations using different graphs, and identify potential features and target variables Note: Explore Univariate
+and Bivariate graphs (Matplotlib) and Seaborn for visualization.
+
+Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+Load dataset
+data = pd.read_csv('/content/netflix_titles.csv')
+
+Display the first few rows of the dataset
+print("First 5 rows of the dataset:")
+print(data.head())
+
+Display the shape of the dataset
+print("\nShape of the dataset:", data.shape)
+
+Check for missing values
+print("\nMissing values:")
+print(data.isnull().sum())
+
+Descriptive summary statistics (only for numeric columns)
+print("\nDescriptive Statistics:")
+print(data.describe())
+
+Univariate Analysis - Numerical Variables
+numeric_columns = data.select_dtypes(include=[np.number]).columns.tolist()
+print("\nNumeric Columns:", numeric_columns)
+
+for col in numeric_columns:
+plt.figure(figsize=(6, 4))
+sns.histplot(data[col].dropna(), kde=True, bins=30) # Drop NA for plotting
+plt.title(f'Distribution of {col}')
+plt.show()
+
+Univariate Analysis - Categorical Variables
+categorical_columns = data.select_dtypes(include=['object']).columns.tolist()
+print("\nCategorical Columns:", categorical_columns)
+
+for col in categorical_columns:
+plt.figure(figsize=(8, 6))
+sns.countplot(y=data[col], order=data[col].value_counts().index)
+plt.title(f'Count Plot of {col}')
+plt.show()
+
+Bivariate Analysis
+Pairplot for numerical columns (skip if too many columns)
+if len(numeric_columns) > 1:
+sns.pairplot(data[numeric_columns].dropna())
+plt.show()
+
+Heatmap to visualize correlations among numerical columns
+plt.figure(figsize=(10, 8))
+sns.heatmap(data[numeric_columns].corr(), annot=True, cmap='coolwarm', fmt='.2f')
+plt.title('Correlation Matrix')
+plt.show()
+
+Scatter plots for specific relationships between numeric columns
+for i, col1 in enumerate(numeric_columns):
+for col2 in numeric_columns[i+1:]: # Avoid duplicate pairs and self-pairs
+plt.figure(figsize=(6, 4))
+sns.scatterplot(x=data[col1], y=data[col2])
+plt.title(f'{col1} vs {col2}')
+plt.show()
+
+Identify potential features and target variables
+Hypothetical target variable - replace with your actual target column
+target_variable = 'target_column' # Example placeholder
+features = [col for col in data.columns if col != target_variable]
+
+print("\nPotential Features:", features)
+print("Target Variable:", target_variable)
+
+OUTPUT
+First 5 rows of the dataset:
+show_id type title director
+0 s1 Movie Dick Johnson Is Dead Kirsten Johnson
+1 s2 TV Show Blood & Water NaN
+2 s3 TV Show Ganglands Julien Leclercq
+3 s4 TV Show Jailbirds New Orleans NaN
+4 s5 TV Show Kota Factory NaN
+
+                                            cast        country  \
+0 NaN United States
+1 Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban... South Africa
+2 Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi... NaN
+3 NaN NaN
+4 Mayur More, Jitendra Kumar, Ranjan Raj, Alam K... India
+
+       date_added  release_year rating   duration  \
+0 September 25, 2021 2020 PG-13 90 min
+1 September 24, 2021 2021 TV-MA 2 Seasons
+2 September 24, 2021 2021 TV-MA 1 Season
+3 September 24, 2021 2021 TV-MA 1 Season
+4 September 24, 2021 2021 TV-MA 2 Seasons
+
+                                       listed_in  \
+0 Documentaries
+1 International TV Shows, TV Dramas, TV Mysteries
+2 Crime TV Shows, International TV Shows, TV Act...
+3 Docuseries, Reality TV
+4 International TV Shows, Romantic TV Shows, TV ...
+
+                                     description  
+0 As her father nears the end of his life, filmm...
+1 After crossing paths at a party, a Cape Town t...
+2 To protect his family from a powerful drug lor...
+3 Feuds, flirtations and toilet talk go down amo...
+4 In a city of coaching centers known to train I...
+
+Shape of the dataset: (8807, 12)
+
+Missing values:
+show_id 0
+type 0
+title 0
+director 2634
+cast 825
+country 831
+date_added 10
+release_year 0
+rating 4
+duration 3
+listed_in 0
+description 0
+dtype: int64
+
+Descriptive Statistics:
+release_year
+count 8807.000000
+mean 2014.180198
+std 8.819312
+min 1925.000000
+25% 2013.000000
+50% 2017.000000
+75% 2019.000000
+max 2021.000000
+
+Numeric Columns: ['release_year']
+
+Categorical Columns: ['show_id', 'type', 'title', 'director', 'cast', 'country', 'date_added', 'rating', 'duration', 'listed_in', 'description']
+
