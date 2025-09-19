@@ -1,0 +1,101 @@
+# Step 1: Import necessary modules
+import pandas as pd
+import matplotlib.pyplot as plt
+from google.colab import files
+
+# Step 2: Upload the CSV file from your local machine
+uploaded = files.upload()
+
+# Step 3: Read the CSV file into a pandas DataFrame
+df = pd.read_csv('netflix_titles.csv')
+
+# Step 4: Print the DataFrame to verify
+print("Data from netflix_titles.csv:")
+print(df.head())  # print only first 5 rows for brevity
+
+# Step 5: Check for missing values
+print("\nMissing values in each column:")
+missing_values = df.isnull().sum()
+print(missing_values)
+
+# Step 6: Calculate the percentage of missing values
+missing_percentage = (missing_values / len(df)) * 100
+print("\nPercentage of missing values in each column:")
+print(missing_percentage)
+
+# Step 7: Visualize missing values (optional but more useful)
+missing_values.plot(kind='bar', figsize=(10, 6))
+plt.title('Missing Values Count per Column')
+plt.xlabel('Columns')
+plt.ylabel('Count of Missing Values')
+plt.show()
+
+#OUTPUT
+netflix_titles.csv
+netflix_titles.csv(text/csv) - 3399671 bytes, last modified: 9/20/2025 - 100% done
+Saving netflix_titles.csv to netflix_titles (1).csv
+Data from netflix_titles.csv:
+  show_id     type                  title         director  \
+0      s1    Movie   Dick Johnson Is Dead  Kirsten Johnson   
+1      s2  TV Show          Blood & Water              NaN   
+2      s3  TV Show              Ganglands  Julien Leclercq   
+3      s4  TV Show  Jailbirds New Orleans              NaN   
+4      s5  TV Show           Kota Factory              NaN   
+
+                                                cast        country  \
+0                                                NaN  United States   
+1  Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...   South Africa   
+2  Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...            NaN   
+3                                                NaN            NaN   
+4  Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...          India   
+
+           date_added  release_year rating   duration  \
+0  September 25, 2021          2020  PG-13     90 min   
+1  September 24, 2021          2021  TV-MA  2 Seasons   
+2  September 24, 2021          2021  TV-MA   1 Season   
+3  September 24, 2021          2021  TV-MA   1 Season   
+4  September 24, 2021          2021  TV-MA  2 Seasons   
+
+                                           listed_in  \
+0                                      Documentaries   
+1    International TV Shows, TV Dramas, TV Mysteries   
+2  Crime TV Shows, International TV Shows, TV Act...   
+3                             Docuseries, Reality TV   
+4  International TV Shows, Romantic TV Shows, TV ...   
+
+                                         description  
+0  As her father nears the end of his life, filmm...  
+1  After crossing paths at a party, a Cape Town t...  
+2  To protect his family from a powerful drug lor...  
+3  Feuds, flirtations and toilet talk go down amo...  
+4  In a city of coaching centers known to train I...  
+
+Missing values in each column:
+show_id            0
+type               0
+title              0
+director        2634
+cast             825
+country          831
+date_added        10
+release_year       0
+rating             4
+duration           3
+listed_in          0
+description        0
+dtype: int64
+
+Percentage of missing values in each column:
+show_id          0.000000
+type             0.000000
+title            0.000000
+director        29.908028
+cast             9.367549
+country          9.435676
+date_added       0.113546
+release_year     0.000000
+rating           0.045418
+duration         0.034064
+listed_in        0.000000
+description      0.000000
+dtype: float64
