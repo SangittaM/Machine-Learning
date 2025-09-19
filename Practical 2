@@ -1,0 +1,52 @@
+Q2a. Implement and demonstrate the FIND-S algorithm for finding the most specific hypothesis based on a given set of training data samples. Read the training data from a. CSV
+file and generate the final specific hypothesis. (Create your dataset).
+Aim:- Implement and demonstrate the FIND-S algorithm for finding the most specific hypothesis based on a given set of training data samples. Read the training data from a. CSV
+file and generate the final specific hypothesis. (Create your dataset)
+
+Example of dataset:
+| Sky   | AirTemp | Humidity | Wind   | Water | Forecast | EnjoySport |
+| ----- | ------- | -------- | ------ | ----- | -------- | ---------- |
+| Sunny | Warm    | Normal   | Strong | Warm  | Same     | Yes        |
+| Sunny | Warm    | High     | Strong | Warm  | Same     | Yes        |
+| Rainy | Cold    | High     | Strong | Warm  | Change   | No         |
+| Sunny | Warm    | High     | Strong | Cool  | Change   | Yes        |
+
+Source Code:-
+
+import pandas as pd
+
+# Step 1: Create the dataset and save as CSV
+data = {
+    'Sky': ['Sunny', 'Sunny', 'Rainy', 'Sunny', 'Sunny'],
+    'AirTemp': ['Warm', 'Warm', 'Cold', 'Warm', 'Warm'],
+    'Humidity': ['Normal', 'High', 'High', 'High', 'Normal'],
+    'Wind': ['Strong', 'Strong', 'Strong', 'Strong', 'Weak'],
+    'Water': ['Warm', 'Warm', 'Warm', 'Cool', 'Warm'],
+    'Forecast': ['Same', 'Same', 'Change', 'Change', 'Same'],
+    'EnjoySport': ['Yes', 'Yes', 'No', 'Yes', 'Yes']
+}
+
+df = pd.DataFrame(data)
+df.to_csv('finds_dataset.csv', index=False)
+
+# Step 2: Implement FIND-S algorithm
+def find_s_algorithm(dataframe, target_attr):
+    # Initialize hypothesis with most specific hypothesis
+    # We'll use None or 'Ø' to denote most specific (no generalization)
+    hypothesis = ['Ø'] * (len(dataframe.columns) - 1)  # excluding target attribute
+
+    for index, row in dataframe.iterrows():
+        if row[target_attr] == 'Yes':
+            for i, attr in enumerate(dataframe.columns[:-1]):  # exclude target
+                if hypothesis[i] == 'Ø':  # first positive example, set hypothesis
+                    hypothesis[i] = row[attr]
+                elif hypothesis[i] != row[attr]:
+                    hypothesis[i] = '?'  # generalize attribute if different
+    return hypothesis
+
+# Step 3: Read dataset and apply FIND-S
+df = pd.read_csv('finds_dataset.csv')
+final_hypothesis = find_s_algorithm(df, 'EnjoySport')
+
+print("Final specific hypothesis:")
+print(final_hypothesis)
